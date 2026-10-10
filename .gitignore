@@ -1,0 +1,27 @@
+# Binaries / build output
+/add-app
+/add_app
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Fyne packaging output
+*.tar.gz
+*.zip
+/fyne-cross
+/dist
+/release
+
+# Test binaries
+*.test
+*.out
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
