@@ -12,14 +12,14 @@ import (
 
 // form bundles all widget handles so handlers can read/write values.
 type form struct {
-	name      *widget.Entry
+	name       *widget.Entry
 	executable *widget.Entry
-	args      *widget.Entry
-	comment   *widget.Entry
-	icon      *widget.Entry
-	iconPath  string
-	terminal  *widget.Check
-	category  *widget.Select
+	args       *widget.Entry
+	comment    *widget.Entry
+	icon       *widget.Entry
+	iconPath   string
+	terminal   *widget.Check
+	category   *widget.Select
 }
 
 // controller owns the widget state and handles every user action.
@@ -29,8 +29,9 @@ type controller struct {
 	f form
 }
 
-// BuildUI assembles the window content and wires all callbacks.
-func BuildUI(a fyne.App, w fyne.Window) {
+// BuildUI assembles the window content, wires all callbacks, and returns the
+// root content object.
+func BuildUI(a fyne.App, w fyne.Window) fyne.CanvasObject {
 	c := &controller{a: a, w: w}
 
 	name := widget.NewEntry()
@@ -60,13 +61,13 @@ func BuildUI(a fyne.App, w fyne.Window) {
 	category.SetSelected("General")
 
 	c.f = form{
-		name:      name,
+		name:       name,
 		executable: executable,
-		args:      args,
-		comment:   comment,
-		icon:      icon,
-		terminal:  terminal,
-		category:  category,
+		args:       args,
+		comment:    comment,
+		icon:       icon,
+		terminal:   terminal,
+		category:   category,
 	}
 
 	frm := widget.NewForm(
@@ -86,7 +87,9 @@ func BuildUI(a fyne.App, w fyne.Window) {
 
 	buttons := container.NewHBox(save, load, quit)
 	body := container.NewBorder(nil, buttons, nil, nil, container.NewVBox(frm))
-	w.SetContent(container.NewPadded(body))
+	content := container.NewPadded(body)
+	w.SetContent(content)
+	return content
 }
 
 func (c *controller) currentEntry() domain.LauncherEntry {
@@ -102,7 +105,7 @@ func (c *controller) currentEntry() domain.LauncherEntry {
 }
 
 func (c *controller) chooseExecutable() {
-	openFileDialog(c.w, "Select executable", nil, func(path string) {
+	openFilePicker(c.a, "Select executable", nil, func(path string) {
 		if path == "" {
 			return
 		}
@@ -114,7 +117,7 @@ func (c *controller) chooseExecutable() {
 }
 
 func (c *controller) chooseIcon() {
-	openFileDialog(c.w, "Select icon image", domain.KnownIconExtensions, func(path string) {
+	openFilePicker(c.a, "Select icon image", domain.KnownIconExtensions, func(path string) {
 		if path == "" {
 			return
 		}
@@ -185,7 +188,7 @@ func (c *controller) doWrite(entry domain.LauncherEntry, target string) {
 }
 
 func (c *controller) loadDesktop() {
-	openFileDialog(c.w, "Open .desktop to edit", []string{".desktop"}, func(path string) {
+	openFilePicker(c.a, "Open .desktop to edit", []string{".desktop"}, func(path string) {
 		if path == "" {
 			return
 		}
