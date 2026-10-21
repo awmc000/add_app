@@ -1,6 +1,6 @@
 # Add App
 
-A small Go + [Fyne](https://fyne.io) desktop utility for GNOME (Pop!_OS) that
+A small Go + [Fyne](https://fyne.io) desktop utility for GNOME that
 collects launcher details in a form and writes valid `.desktop` files into the
 user's applications directory (`~/.local/share/applications/`), so the app
 appears in the app grid and dock.
@@ -54,6 +54,13 @@ internal/domain   pure logic (no Fyne imports), unit-tested
 internal/app      Fyne UI: window, native file dialogs, controller wiring
 assets/icons      bundled default category icons (SVG)
 ```
+
+## Icons
+
+Icons make use of the
+[Material Design Icons](https://pictogrammers.com/library/mdi/) set
+(© Pictogrammers, licensed under the Apache License 2.0). See
+`assets/icons/*.svg` and https://github.com/Templarian/MaterialDesign.
 
 ## Test
 
